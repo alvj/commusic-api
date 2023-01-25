@@ -1,8 +1,10 @@
 import datetime
+import dataclasses
 from pydantic import BaseModel
 
-
+@dataclasses.dataclass
 class Post(BaseModel):
+    """A dummy docstring."""
     post_id: int
     user_id: int
     price: int
