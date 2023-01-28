@@ -3,6 +3,6 @@ from pydantic import BaseModel
 
 @dataclasses.dataclass
 class PostCategory(BaseModel):
-    """A dummy docstring."""
+    """Post Category Model."""
     post_id: int
     category_id: int
