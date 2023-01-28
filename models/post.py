@@ -1,11 +1,11 @@
 import datetime
 import dataclasses
-from pydantic import BaseModel
+from sqlmodel import Field, SQLModel
 
 @dataclasses.dataclass
-class Post(BaseModel):
-    """A dummy docstring."""
-    post_id: int
+class Post(SQLModel, table=True):
+    """Post Model."""
+    post_id: int = Field(primary_key=True)
     user_id: int
     price: int
     title: str

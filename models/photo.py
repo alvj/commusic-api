@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 @dataclasses.dataclass
 class Photo(BaseModel):
-    """A dummy docstring."""
+    """Photo Model."""
     photo_id: int
     content: str
     post_id: int
