@@ -4,19 +4,19 @@ from sqlmodel import Field, SQLModel
 class Post(SQLModel, table=True):
     __tablename__: str = "posts"
 
-    post_id: int | None = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     user_id: int
     title: str
     description: str
     price: int
-    upload_date: datetime
+    upload_date: datetime = Field(default=datetime.now)
 
 class Photo(SQLModel):
     __tablename__: str = "photos"
 
-    photo_id: int | None = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     content: str
-    post_id: int
+    post_id: int 
 
 class PostCategory(SQLModel):
     __tablename__: str = "posts_categories"
@@ -27,5 +27,5 @@ class PostCategory(SQLModel):
 class Category(SQLModel):
     __tablename__: str = "categories"
 
-    category_id: int | None = Field(default=None, primary_key=True)
-    category_name: str
+    id: int | None = Field(default=None, primary_key=True)
+    name: str
