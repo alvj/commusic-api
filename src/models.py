@@ -6,17 +6,18 @@ class Post(SQLModel, table=True):
 
     id: int | None = Field(default=None, primary_key=True)
     user_id: int
-    title: str
-    description: str
-    price: int
+    photos: list["Photo"] | None = Relationship(back_populates="post", sa_relationship_kwargs={
+        "primaryjoin": "Post.id == foreign(Photo.post_id)"
+    })
     upload_date: datetime = Field(default=datetime.now)
 
 class Photo(SQLModel):
     __tablename__: str = "photos"
 
     id: int | None = Field(default=None, primary_key=True)
-    content: str
-    post_id: int 
+    post: Post = Relationship(back_populates="photos", sa_relationship_kwargs={
+        "primaryjoin": "Post.id == foreign(Photo.post_id)"
+    })
 
 class PostCategory(SQLModel):
     __tablename__: str = "posts_categories"
