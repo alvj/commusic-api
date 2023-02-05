@@ -12,8 +12,6 @@ database_url = URL.create(
 
 engine = create_engine(database_url)
 
-def create_tables():
+def create_db_and_tables():
+    from . import models # pylint: disable=unused-import, import-outside-toplevel
     SQLModel.metadata.create_all(engine)
-
-if __name__ == "__main__":
-    create_tables()
