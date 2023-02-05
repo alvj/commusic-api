@@ -1,7 +1,13 @@
 from datetime import datetime
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
-class Post(SQLModel, table=True):
+class PostBase(SQLModel):
+    user_id: int = Field(index=True)
+    title: str
+    description: str
+    price: int
+
+class Post(PostBase, table=True):
     __tablename__: str = "posts"
 
     id: int | None = Field(default=None, primary_key=True)
@@ -10,8 +16,17 @@ class Post(SQLModel, table=True):
         "primaryjoin": "Post.id == foreign(Photo.post_id)"
     })
 
+class PostRead(PostBase):
+    id: int
 
-class Photo(SQLModel):
+class PostCreate(PostBase):
+    pass
+
+class PhotoBase(SQLModel):
+    content: str
+    post_id: int = Field(index=True)
+
+class Photo(PhotoBase, table=True):
     __tablename__: str = "photos"
 
     id: int | None = Field(default=None, primary_key=True)
@@ -19,14 +34,24 @@ class Photo(SQLModel):
         "primaryjoin": "Post.id == foreign(Photo.post_id)"
     })
 
-class PostCategory(SQLModel):
+class PhotoRead(PhotoBase):
+    id: int
+
+class PhotoCreate(PhotoBase):
+    pass
+
+class PostCategory(SQLModel, table=True):
     __tablename__: str = "posts_categories"
 
+    id: int | None = Field(default=None, primary_key=True)
     post_id: int
     category_id: int
 
-class Category(SQLModel):
+class Category(SQLModel, table=True):
     __tablename__: str = "categories"
 
     id: int | None = Field(default=None, primary_key=True)
     name: str
+
+class PostReadWithPhotos(PostRead):
+    photos: list[PhotoRead] | None = None
