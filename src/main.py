@@ -1,7 +1,10 @@
-from fastapi import FastAPI, status
+from fastapi import Depends, FastAPI, HTTPException, status
 from sqlmodel import Session, select
 from .database import create_db_and_tables, engine
 from .models import Post
+def get_session():
+    with Session(engine) as session:
+        yield session
 
 app = FastAPI()
 
