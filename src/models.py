@@ -5,11 +5,11 @@ class Post(SQLModel, table=True):
     __tablename__: str = "posts"
 
     id: int | None = Field(default=None, primary_key=True)
-    user_id: int
+    upload_date: datetime | None = Field(default_factory=datetime.now)
     photos: list["Photo"] | None = Relationship(back_populates="post", sa_relationship_kwargs={
         "primaryjoin": "Post.id == foreign(Photo.post_id)"
     })
-    upload_date: datetime = Field(default=datetime.now)
+
 
 class Photo(SQLModel):
     __tablename__: str = "photos"
