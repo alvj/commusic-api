@@ -15,7 +15,7 @@ def on_startup():
 
 @app.get("/health", status_code=status.HTTP_200_OK)
 def health_check():
-    return "Health check OK"
+    return "OK"
 
 @app.post("/posts", response_model=PostRead)
 def create_post(post: PostCreate, session: Session = Depends(get_session)):
