@@ -1,9 +1,13 @@
 from fastapi import FastAPI, status
 from sqlmodel import Session, select
-from .database import engine
+from .database import create_db_and_tables, engine
 from .models import Post
 
 app = FastAPI()
+
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
 
 @app.get("/health", status_code=status.HTTP_200_OK)
 def health_check():
