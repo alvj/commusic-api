@@ -8,6 +8,7 @@ fastapi = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 sqlmodel = "*"
 mysql-connector-python = "*"
+python-multipart = "*"
 
 [dev-packages]
 pylint = "*"
