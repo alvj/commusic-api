@@ -31,7 +31,7 @@ def read_posts(session: Session = Depends(get_session)) :
     return posts
 
 @app.get("/posts/{post_id}", response_model=PostReadWithPhotos)
-def read_post(post_id: int, session: Session = Depends(get_session)):
+def read_post_details(post_id: int, session: Session = Depends(get_session)):
     post = session.get(Post, post_id)
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found")
