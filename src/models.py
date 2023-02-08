@@ -55,3 +55,19 @@ class Category(SQLModel, table=True):
 
 class PostReadWithPhotos(PostRead):
     photos: list[PhotoRead] | None = None
+
+# AUTHENTICATION
+class UserBase(SQLModel):
+    username: str = Field(index=True)
+    email: str | None = None
+    full_name: str | None = None
+    birth_date: datetime | None = None
+
+class User(UserBase):
+    id: int | None = Field(default=None, primary_key=True)
+    register_date: datetime | None = Field(default_factory=datetime.now)
+    password: str
+
+class Token(SQLModel):
+    access_token: str
+    token_type: str
