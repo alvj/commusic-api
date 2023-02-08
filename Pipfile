@@ -9,6 +9,8 @@ uvicorn = {extras = ["standard"], version = "*"}
 sqlmodel = "*"
 mysql-connector-python = "*"
 python-multipart = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 pylint = "*"
