@@ -2,7 +2,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session, select
 from .database import create_db_and_tables
-from .models import Post, PostCreate, PostRead, PostReadWithPhotos, Token, User, UserBase
+from .models import Post, PostCreate, PostRead, PostReadWithPhotos, Token, User, UserRead
 from .dependencies import authenticate_user, create_access_token, get_current_user, get_session
 
 app = FastAPI()
@@ -52,9 +52,9 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"}
         )
-    access_token = create_access_token(data={"sub": user.get("username")})
+    access_token = create_access_token(data={"sub": user.username})
     return Token(access_token=access_token, token_type="bearer")
 
-@app.get("/users/me", response_model=UserBase)
+@app.get("/users/me", response_model=UserRead)
 async def read_current_user(current_user: User = Depends(get_current_user)):
     return current_user
