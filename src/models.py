@@ -18,6 +18,7 @@ class Post(PostBase, table=True):
 
 class PostRead(PostBase):
     id: int
+    upload_date: datetime
 
 class PostCreate(PostBase):
     pass
