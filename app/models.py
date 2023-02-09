@@ -59,7 +59,7 @@ class PostReadWithPhotos(PostRead):
 
 # AUTHENTICATION
 class UserBase(SQLModel):
-    username: str = Field(index=True)
+    username: str = Field(unique=True)
     email: str
     full_name: str
     description: str | None = Field(default=None)

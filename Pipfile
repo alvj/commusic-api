@@ -16,10 +16,9 @@ passlib = {extras = ["bcrypt"], version = "*"}
 pylint = "*"
 
 [scripts]
-start = "uvicorn src.main:app --host 0.0.0.0"
-debug = "uvicorn src.main:app --reload"
-create_tables = "python -m src.database"
-lint = "pylint src"
+start = "uvicorn app.main:app --host 0.0.0.0"
+debug = "uvicorn app.main:app --reload"
+lint = "pylint app"
 
 [requires]
 python_version = "3.10"
