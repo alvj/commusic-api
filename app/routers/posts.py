@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=PostReadWithPhotos, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=PostRead, status_code=status.HTTP_201_CREATED)
 def create_post(post: PostCreate, session: Session = Depends(get_session)):
     db_post = Post.from_orm(post)
     session.add(db_post)
@@ -19,7 +19,7 @@ def create_post(post: PostCreate, session: Session = Depends(get_session)):
     return db_post
 
 
-@router.get("/", response_model=list[PostRead])
+@router.get("/", response_model=list[PostReadWithPhotos])
 def read_posts(session: Session = Depends(get_session)):
     posts = session.exec(select(Post)).all()
     return posts
