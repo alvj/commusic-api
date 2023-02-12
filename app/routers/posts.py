@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlmodel import Session, select
 from ..dependencies import get_session
-from ..models import Post, PostRead, PostReadWithPhotos, PostCreate
+from ..models.post_model import Post, PostRead, PostReadWithPhotos, PostCreate
 
 router = APIRouter(
     prefix="/posts",
