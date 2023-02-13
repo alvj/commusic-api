@@ -1,10 +1,10 @@
-from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from .photo_model import Photo, PhotoRead
+    from .user_model import User, UserReadBasic
 
 
 class PostBase(SQLModel):
@@ -22,6 +22,10 @@ class Post(PostBase, table=True):
     photos: list["Photo"] | None = Relationship(back_populates="post", sa_relationship_kwargs={
         "primaryjoin": "Post.id == foreign(Photo.post_id)"
     })
+    user: "User" = Relationship(back_populates="posts", sa_relationship_kwargs={
+        "primaryjoin": "foreign(Post.user_id) == User.id",
+        "uselist": False
+    })
 
 
 class PostRead(PostBase):
@@ -33,5 +37,6 @@ class PostCreate(PostBase):
     pass
 
 
-class PostReadWithPhotos(PostRead):
+class PostReadWithDetails(PostRead):
     photos: list["PhotoRead"] | None = None
+    user: "UserReadBasic"

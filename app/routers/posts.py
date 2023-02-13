@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlmodel import Session, select
 from ..dependencies import get_session
-from ..models.post_model import Post, PostRead, PostReadWithPhotos, PostCreate
+from ..models.post_model import Post, PostRead, PostReadWithDetails, PostCreate
 
 router = APIRouter(
     prefix="/posts",
@@ -19,13 +19,13 @@ def create_post(post: PostCreate, session: Session = Depends(get_session)):
     return db_post
 
 
-@router.get("/", response_model=list[PostReadWithPhotos])
+@router.get("/", response_model=list[PostReadWithDetails])
 def read_posts(session: Session = Depends(get_session)):
     posts = session.exec(select(Post)).all()
     return posts
 
 
-@router.get("/{post_id}", response_model=PostReadWithPhotos)
+@router.get("/{post_id}", response_model=PostReadWithDetails)
 def read_post_details(post_id: int, session: Session = Depends(get_session)):
     post = session.get(Post, post_id)
     if not post:

@@ -8,13 +8,14 @@ if TYPE_CHECKING:
 
 class PhotoBase(SQLModel):
     content: str
-    post_id: int = Field(index=True)
 
 
 class Photo(PhotoBase, table=True):
     __tablename__: str = "photos"
 
     id: int | None = Field(default=None, primary_key=True)
+    post_id: int = Field(index=True)
+
     post: "Post" = Relationship(back_populates="photos", sa_relationship_kwargs={
         "primaryjoin": "Post.id == foreign(Photo.post_id)"
     })
@@ -25,4 +26,4 @@ class PhotoRead(PhotoBase):
 
 
 class PhotoCreate(PhotoBase):
-    pass
+    post_id: int

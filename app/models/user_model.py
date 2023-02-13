@@ -1,5 +1,9 @@
 from datetime import datetime
-from sqlmodel import Field, SQLModel
+from typing import TYPE_CHECKING, Optional
+from sqlmodel import Field, SQLModel, Relationship
+
+if TYPE_CHECKING:
+    from .post_model import Post, PostRead
 
 
 class UserBase(SQLModel):
@@ -18,7 +22,22 @@ class User(UserBase, table=True):
     register_date: datetime | None = Field(default_factory=datetime.utcnow)
     password: str
 
+    posts: list["Post"] | None = Relationship(back_populates="user", sa_relationship_kwargs={
+        "primaryjoin": "foreign(Post.user_id) == User.id"
+    })
+
 
 class UserRead(UserBase):
     id: int
     register_date: datetime
+
+
+class UserReadDetails(UserRead):
+    posts: Optional[list["PostRead"]]
+
+
+class UserReadBasic(SQLModel):
+    username: str
+    email: str
+    full_name: str
+    profile_picture: str | None
