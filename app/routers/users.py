@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends
-from ..dependencies import get_current_user
-from ..models.user_model import User, UserRead
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlmodel import Session
+from ..dependencies import get_current_user, get_session
+from ..models.user_model import User, UserRead, UserReadWithDetails
 
 router = APIRouter(
     prefix="/users",
@@ -10,5 +11,14 @@ router = APIRouter(
 
 
 @router.get("/me", response_model=UserRead)
-async def read_current_user(current_user: User = Depends(get_current_user)):
+def read_current_user(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.get("/{user_id}", response_model=UserReadWithDetails)
+def read_user_details(user_id: int, session: Session = Depends(get_session)):
+    user = session.get(User, user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    return user

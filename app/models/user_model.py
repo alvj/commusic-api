@@ -32,7 +32,7 @@ class UserRead(UserBase):
     register_date: datetime
 
 
-class UserReadDetails(UserRead):
+class UserReadWithDetails(UserRead):
     posts: Optional[list["PostRead"]]
 
 
