@@ -6,7 +6,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlmodel import Session, select
 from .database import engine
-from .models import User
+from .models.user_model import User
 
 
 def get_session():
