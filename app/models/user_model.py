@@ -41,3 +41,7 @@ class UserReadBasic(SQLModel):
     email: str
     full_name: str
     profile_picture: str | None
+
+
+class UserCreate(UserBase):
+    password: str
