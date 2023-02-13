@@ -8,6 +8,7 @@ if TYPE_CHECKING:
 
 class PhotoBase(SQLModel):
     content: str
+    order: int
 
 
 class Photo(PhotoBase, table=True):
