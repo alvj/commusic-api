@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
@@ -22,6 +22,11 @@ class Post(PostBase, table=True):
     photos: list["Photo"] | None = Relationship(back_populates="post", sa_relationship_kwargs={
         "primaryjoin": "Post.id == foreign(Photo.post_id)"
     })
+    photo: Optional["Photo"] = Relationship(sa_relationship_kwargs={
+        "primaryjoin": "and_(Post.id==foreign(Photo.post_id), Photo.order==1)",
+        "uselist": False,
+        "viewonly": True
+    })
     user: "User" = Relationship(back_populates="posts", sa_relationship_kwargs={
         "primaryjoin": "foreign(Post.user_id) == User.id",
         "uselist": False
@@ -39,4 +44,9 @@ class PostCreate(PostBase):
 
 class PostReadWithDetails(PostRead):
     photos: list["PhotoRead"] | None = None
+    user: "UserReadBasic"
+
+
+class PostReadList(PostRead):
+    photo: Optional["PhotoRead"] = None
     user: "UserReadBasic"
