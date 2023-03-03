@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 from ..dependencies import get_current_user, get_session
-from ..models.user_model import User, UserRead, UserReadWithDetails, UserCreate
+from ..models.user_model import User, UserRead, UserReadWithDetails, UserCreate, UserUpdate
+from .. import crud
 
 router = APIRouter(
     prefix="/users",
@@ -13,6 +14,16 @@ router = APIRouter(
 @router.get("/me", response_model=UserRead)
 def read_current_user(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.patch("/me", response_model=UserRead)
+def update_user(
+    new_user: UserUpdate,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user)
+):
+    db_user = crud.update_entity(session, current_user, new_user)
+    return db_user
 
 
 @router.get("/{user_id}", response_model=UserReadWithDetails)

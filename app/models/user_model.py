@@ -45,3 +45,12 @@ class UserReadBasic(SQLModel):
 
 class UserCreate(UserBase):
     password: str
+
+
+class UserUpdate(SQLModel):
+    username: str | None = None
+    email: str | None = None
+    full_name: str | None = None
+    description: str | None = None
+    birth_date: datetime | None = None
+    profile_picture: str | None = None
