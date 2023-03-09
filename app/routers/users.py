@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
-from ..dependencies import get_current_user, get_session
+from ..dependencies import get_current_user, get_session, get_password_hash
 from ..models.user_model import User, UserRead, UserReadWithDetails, UserCreate, UserUpdate
 from .. import crud
 
@@ -37,6 +37,7 @@ def read_user_details(user_id: int, session: Session = Depends(get_session)):
 
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
 def register_user(user: UserCreate, session: Session = Depends(get_session)):
+    user.password = get_password_hash(user.password)
     db_user = User.from_orm(user)
     session.add(db_user)
     session.commit()
