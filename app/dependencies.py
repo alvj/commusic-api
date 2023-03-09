@@ -1,5 +1,4 @@
 from os import environ
-from datetime import datetime, timedelta
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
@@ -64,8 +63,6 @@ def authenticate_user(username: str, password: str):
 
 def create_access_token(data: dict):
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(
         to_encode, environ["SECRET_KEY"], algorithm=environ["ALGORITHM"])
     return encoded_jwt

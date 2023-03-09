@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 from ..dependencies import authenticate_user, create_access_token
@@ -17,5 +18,13 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"}
         )
-    access_token = create_access_token(data={"sub": user.username})
-    return Token(access_token=access_token, token_type="bearer")
+
+    expire = datetime.utcnow() + timedelta(minutes=15)
+    access_token = create_access_token(
+        data={"sub": user.username, "exp": expire})
+
+    return Token(
+        access_token=access_token,
+        token_type="bearer",
+        expires=expire
+    )
