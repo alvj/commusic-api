@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from os import environ
 from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 from ..dependencies import authenticate_user, create_access_token
@@ -19,7 +20,8 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
             headers={"WWW-Authenticate": "Bearer"}
         )
 
-    expire = datetime.utcnow() + timedelta(minutes=15)
+    expire = datetime.utcnow() + \
+        timedelta(minutes=float(environ["ACCESS_TOKEN_EXPIRE_MINUTES"]))
     access_token = create_access_token(
         data={"sub": user.username, "exp": expire})
 
